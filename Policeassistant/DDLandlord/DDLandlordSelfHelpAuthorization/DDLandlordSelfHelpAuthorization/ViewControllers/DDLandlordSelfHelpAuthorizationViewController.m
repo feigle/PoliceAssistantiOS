@@ -52,6 +52,7 @@
 #pragma mark - 基础数据
 - (void)setupData
 {
+//    18179144606
     self.startAuthorizationTimeDate = [NSDate date];
     self.endAuthorizationTimeDate = [self.startAuthorizationTimeDate returnAfterAFewYearsDateWithNumber:1];
     self.authorizationModel = [[DDLandlordSelfHelpAuthorizationModel alloc] init];

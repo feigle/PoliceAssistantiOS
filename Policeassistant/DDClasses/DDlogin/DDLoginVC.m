@@ -64,7 +64,7 @@
     pwd=[self createTextFielfFrame:CGRectMake(60, 57, loginView.frame.size.width-60, 18) font:[UIFont systemFontOfSize:18]  placeholder:@"请输入密码" ];
     pwd.clearButtonMode = UITextFieldViewModeWhileEditing;
     //密文样式
-    user.keyboardType=UIKeyboardTypeNumbersAndPunctuation;
+    pwd.keyboardType=UIKeyboardTypeNumbersAndPunctuation;
     pwd.secureTextEntry=YES;
     pwd.delegate=self;
     

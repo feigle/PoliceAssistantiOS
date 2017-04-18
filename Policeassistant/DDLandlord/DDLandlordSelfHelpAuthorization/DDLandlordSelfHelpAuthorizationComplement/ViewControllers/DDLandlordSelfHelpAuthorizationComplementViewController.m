@@ -112,7 +112,7 @@
         return;
     }
     /**以上代表已经选择完了，这里判断是否已经上传完了*/
-    if (!self.authorizationModel.card_img1 && !self.authorizationModel.card_img2 &&!self.authorizationModel.card_img3) {
+    if (!self.authorizationModel.card_img1 || !self.authorizationModel.card_img2 ||!self.authorizationModel.card_img3) {
         WeakSelf
         [SVProgressHUD showWithStatus:@"授权中..."];
         if (!self.authorizationModel.card_img1) {//身份证正面照
