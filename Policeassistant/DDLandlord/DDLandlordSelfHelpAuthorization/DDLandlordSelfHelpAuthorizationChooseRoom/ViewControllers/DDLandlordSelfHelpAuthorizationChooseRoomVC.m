@@ -12,7 +12,7 @@
 #import "DDBaseSearchController.h"
 #import "DDBaseSearchResultViewController.h"
 
-@interface DDLandlordSelfHelpAuthorizationChooseRoomVC ()
+@interface DDLandlordSelfHelpAuthorizationChooseRoomVC ()<UISearchBarDelegate>
 
 /**搜索结果数据源*/
 @property (nonatomic,strong) NSMutableArray * searchResultDataArray;
@@ -110,6 +110,7 @@
         NSArray * dictsArray = requestDict[@"list"];
         [strongSelf.searchResultDataArray removeAllObjects];
         if (!dictsArray.count) {
+            [DDProgressHUD showCenterWithText:@"刚房号不存在" duration:2.0];
             [strongSelf.resultViewController reloadData];
             return ;
         }
@@ -289,6 +290,7 @@
     _searchBar.returnKeyType = UIReturnKeySearch;
     _searchBar.placeholder = @"请输入房号";
     _searchBar.layer.masksToBounds = YES;
+    _searchBar.delegate = self;
     //删除原有的background,直接设置搜索框颜色
     [[[[_searchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
     //拿出输入框控件对其设置字体及背景颜色
@@ -301,6 +303,16 @@
     [_searchField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     _searchField.textColor = [UIColor whiteColor];
     [_searchBar sizeToFit];
+}
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    searchBar.showsCancelButton = YES;
+    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
+        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton * cancel =(UIButton *)view;
+            [cancel setTitle:@"取消" forState:UIControlStateNormal];
+            cancel.titleLabel.font = [UIFont systemFontOfSize:14];
+        }
+    }
 }
 
 
