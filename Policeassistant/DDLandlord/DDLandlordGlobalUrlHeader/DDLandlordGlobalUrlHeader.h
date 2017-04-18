@@ -15,8 +15,7 @@
 #if DDReleaseStatus
 #define DDLandlordBaseUrl     @"https://ssl.beta.doordu.com:8001/police/"
 #else
-//#define DDLandlordBaseUrl     @"https://ssl.test.doordu.com:8001/police/"
-#define DDLandlordBaseUrl     @"http://10.0.1.124:8001/police/"
+#define DDLandlordBaseUrl     @"https://ssl.test.doordu.com:8001/police/"
 #endif
 
 /*******************    注册登录    *************************/

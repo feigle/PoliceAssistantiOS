@@ -55,7 +55,7 @@
         manager = [AFHTTPSessionManager manager];
         
         /*! 设置请求超时时间 */
-        manager.requestSerializer.timeoutInterval = 10;
+        manager.requestSerializer.timeoutInterval = 15;
         
         /*! 设置相应的缓存策略：此处选择不用加载也可以使用自动缓存【注：只有get方法才能用此缓存策略，NSURLRequestReturnCacheDataDontLoad】 */
         manager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;

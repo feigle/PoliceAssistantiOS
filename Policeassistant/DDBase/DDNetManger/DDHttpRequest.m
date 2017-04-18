@@ -35,7 +35,7 @@
         manager = [AFHTTPSessionManager manager];
         
         /*! 设置请求超时时间 */
-        manager.requestSerializer.timeoutInterval = 10;
+        manager.requestSerializer.timeoutInterval = 15;
         
         /*! 设置相应的缓存策略：此处选择不用加载也可以使用自动缓存【注：只有get方法才能用此缓存策略，NSURLRequestReturnCacheDataDontLoad】 */
         AFJSONResponseSerializer * response = [AFJSONResponseSerializer serializer];
@@ -102,6 +102,7 @@
                 NSHTTPURLResponse * response = (NSHTTPURLResponse *)task.response;
                 NSInteger statusCode = response.statusCode;
                 failureBlock(statusCode,nil,nil);
+                [[self class] handleErrorCode:statusCode errorMesage:nil];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -113,6 +114,7 @@
         NSInteger statusCode = response.statusCode;
         NSLog(@"%@",error.userInfo);
         failureBlock(statusCode,error,nil);
+        [[self class] handleErrorCode:statusCode errorMesage:nil];
     }];
 }
 
@@ -174,6 +176,7 @@
                 NSHTTPURLResponse * response = (NSHTTPURLResponse *)task.response;
                 NSInteger statusCode = response.statusCode;
                 failureBlock(statusCode,nil,nil);
+                [[self class] handleErrorCode:statusCode errorMesage:nil];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -184,6 +187,7 @@
         NSHTTPURLResponse * response = (NSHTTPURLResponse *)task.response;
         NSInteger statusCode = response.statusCode;
         failureBlock(statusCode,error,nil);
+        [[self class] handleErrorCode:statusCode errorMesage:nil];
     }];
 }
 
@@ -249,6 +253,7 @@
                 NSHTTPURLResponse * response = (NSHTTPURLResponse *)task.response;
                 NSInteger statusCode = response.statusCode;
                 failureBlock(statusCode,nil,nil);
+                [[self class] handleErrorCode:statusCode errorMesage:nil];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -259,6 +264,7 @@
         NSHTTPURLResponse * response = (NSHTTPURLResponse *)task.response;
         NSInteger statusCode = response.statusCode;
         failureBlock(statusCode,error,nil);
+        [[self class] handleErrorCode:statusCode errorMesage:nil];
     }];
 }
 
@@ -344,6 +350,11 @@
 {
     NSString * message = nil;
     switch (errorCode) {
+        case 0://网络请求超时
+        {
+            message = @"网络请求超时";
+        }
+            break;
         case 400://请求失败，response body中会包含具体错误码
         {
         }

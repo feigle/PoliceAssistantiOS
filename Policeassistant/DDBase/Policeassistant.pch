@@ -13,7 +13,7 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
-#define DDReleaseStatus 1  //0 :测试, 1:发布，
+#define DDReleaseStatus 0  //0 :测试, 1:发布，
 #define DDHttpRequestSecretKey @"Epo7QfU9iqyS"
 #define DDPoliceassistantVersion @"1.2.0"//版本号
 

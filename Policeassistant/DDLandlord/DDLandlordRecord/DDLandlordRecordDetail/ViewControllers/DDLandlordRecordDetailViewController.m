@@ -189,6 +189,9 @@
     if ([[self.recordDetailModel.app_status_code toString] integerValue] == 1&&[[self.recordDetailModel.card_status_code toString] integerValue] == 1) {
         return;//1不开通授权，2申请开通授权
     }
+    if (!self.appAuthorizationButton.selected && !self.cardAuthorizationButton.selected) {
+        return;
+    }
     CusstomDatePickerView * pickerView = [[CusstomDatePickerView alloc] initWithDatePickerMode:UIDatePickerModeDate timeBackType:NianYueRiState maximumDate:nil minimumDate:[self.startAuthorizationTimeDate returnAfterAFewDayDateWithNumber:1] defaultDate:self.endAuthorizationTimeDate title:@"授权结束时间"];
     WeakSelf
     [pickerView getCusstomDatePickerViewWithBlock:^(CusstomDatePickerView *pickerView, NSString *dateString, NSDate *selectedDate) {
