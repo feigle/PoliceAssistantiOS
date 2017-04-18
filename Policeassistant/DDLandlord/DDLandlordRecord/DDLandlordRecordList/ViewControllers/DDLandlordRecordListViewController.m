@@ -16,7 +16,7 @@
 #import "DDLandlordRecordEmptyListView.h"
 #import "DDLandlordSelfHelpAuthorizationViewController.h"
 
-@interface DDLandlordRecordListViewController ()
+@interface DDLandlordRecordListViewController ()<UISearchBarDelegate>
 
 /**搜索结果数据源*/
 @property (nonatomic,strong) NSMutableArray * searchResultDataArray;
@@ -121,6 +121,7 @@
         NSArray * dictsArray = requestDict[@"list"];
         [strongSelf.searchResultDataArray removeAllObjects];
         if (!dictsArray.count) {
+            [DDProgressHUD showCenterWithText:@"刚房号不存在" duration:2.0];
             [strongSelf.resultViewController reloadData];
             return ;
         }
@@ -286,6 +287,7 @@
     _searchBar.barTintColor = DaohangCOLOR;
     _searchBar.returnKeyType = UIReturnKeySearch;
     _searchBar.placeholder = @"请输入房号";
+    _searchBar.delegate = self;
     _searchBar.layer.masksToBounds = YES;
     //删除原有的background,直接设置搜索框颜色
     [[[[_searchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
@@ -300,7 +302,16 @@
     _searchField.textColor = [UIColor whiteColor];
     [_searchBar sizeToFit];
 }
-
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    searchBar.showsCancelButton = YES;
+    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
+        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton * cancel =(UIButton *)view;
+            [cancel setTitle:@"取消" forState:UIControlStateNormal];
+            cancel.titleLabel.font = [UIFont systemFontOfSize:14];
+        }
+    }
+}
 #pragma mark - 显示 空的 无授权记录 页面
 - (void)showRecordEmptyView
 {
