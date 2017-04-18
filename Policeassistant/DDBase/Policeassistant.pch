@@ -1,0 +1,54 @@
+//
+//  Policeassistant.pch
+//  Policeassistant
+//
+//  Created by DoorDu on 16/6/27.
+//  Copyright © 2016年 DoorDu. All rights reserved.
+//
+
+//#ifndef Policeassistant_pch
+#define Policeassistant_pch
+
+#ifdef __OBJC__
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+#define DDReleaseStatus 1  //0 :测试, 1:发布，
+#define DDHttpRequestSecretKey @"Epo7QfU9iqyS"
+#define DDPoliceassistantVersion @"1.2.0"//版本号
+
+#define KNOTIFICATION_LOGINCHANGE @"loginStatusChange"
+
+#import "DDScreenFitterHeaderHeader.h"
+#import "LHDFoundationExtendHeader.h"
+#import "SystemNS_enumHeader.h"
+
+#import "AppMacro.h"
+#import "UtilsMacro.h"
+#import "VendorMacro.h"
+#import "MJRefresh.h"//刷新
+#import "DDLabel.h"//label类
+#import "DDButton.h"//按钮类
+#import "DDAlertView.h"//警告框
+#import "DDTextView.h"//带占位符的Textview
+#import "DDUserDefault.h"//用户中心
+#import "SVProgressHUD.h"//带菊花
+#import "DDProgressHUD.h"//不带菊花
+#import "DDTools.h"//公共工具
+#import "DDNetManger.h"//网络请求
+#import "DDNetCache.h"//网络数据缓存
+#import "UIImageView+WebCache.h"
+#import "DDEmptyView.h"
+#import "LHDUIkitExtendHeader.h"
+#import "MyAlertView.h"
+
+/**管理导航控制器*/
+#import "UINavigationController+FDFullscreenPopGesture.h"
+
+
+/**房东*/
+#import "DDLandlordGlobalUrlHeader.h"
+
+#pragma clang diagnostic ignored "-Wmissing-selector-name"
+
+#endif /* Policeassistant_pch */
