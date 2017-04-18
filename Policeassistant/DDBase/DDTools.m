@@ -199,7 +199,6 @@
                 }else {
                     return NO;
                 }
-                
             }else {
                 return NO;
             }
@@ -209,7 +208,7 @@
 }
 #pragma mark - 手机号码验证
 + (BOOL)validatePhone:(NSString *)phone {
-    NSString * strNum = @"^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\d{8}$";
+    NSString * strNum = @"^((13[0-9])|(15[0-9])|(18[0-9])|(17[0-9])|(147))\\d{8}$";
     NSPredicate *checktest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", strNum];
     return [checktest evaluateWithObject:phone];
 }
