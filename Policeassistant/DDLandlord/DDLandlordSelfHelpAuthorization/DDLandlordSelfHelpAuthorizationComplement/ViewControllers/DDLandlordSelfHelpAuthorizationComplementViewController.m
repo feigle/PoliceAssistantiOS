@@ -111,6 +111,10 @@
         [DDProgressHUD showCenterWithText:@"请上传手持身份证照片！" duration:1.5];
         return;
     }
+    if (![self.authorizationModel.real_name isEqualToString:self.identifyCardFrontModel.name]) {
+        [DDProgressHUD showCenterWithText:@"所填姓名与身份证上的姓名不匹配" duration:1.5];
+        return;
+    }
     /**以上代表已经选择完了，这里判断是否已经上传完了*/
     if (!self.authorizationModel.card_img1 || !self.authorizationModel.card_img2 ||!self.authorizationModel.card_img3) {
         WeakSelf

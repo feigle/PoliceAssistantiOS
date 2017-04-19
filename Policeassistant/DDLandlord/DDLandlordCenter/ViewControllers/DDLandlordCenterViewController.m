@@ -128,12 +128,20 @@
 #pragma mark - 自助授权点击事件
 - (void)selfHelpAuthorizationClicked
 {
+    DDLandlordUserModel * userModel = landlordUserModel;
+    if (!userModel.selectedModel) {
+        return;
+    }
     DDLandlordSelfHelpAuthorizationViewController * vc = [[DDLandlordSelfHelpAuthorizationViewController alloc] init];
     [self pushVC:vc];
 }
 #pragma mark - 授权记录点击事件
 - (void)authorizationRecordClicked
 {
+    DDLandlordUserModel * userModel = landlordUserModel;
+    if (!userModel.selectedModel) {
+        return;
+    }
     DDLandlordRecordListViewController * vc = [[DDLandlordRecordListViewController alloc] init];
     [self pushVC:vc];
 }
