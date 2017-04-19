@@ -3200,7 +3200,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: JianHeng Chen (BQ65TGG6AU)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: JianHeng Chen (BQ65TGG6AU)";
 				DEVELOPMENT_TEAM = 7G5HR36TYN;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Policeassistant/DDLib/AliCloud",
@@ -3227,7 +3227,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Shenzhen duodu technology co., LTD (7G5HR36TYN)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Shenzhen duodu technology co., LTD (7G5HR36TYN)";
 				DEVELOPMENT_TEAM = 7G5HR36TYN;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Policeassistant/DDLib/AliCloud",

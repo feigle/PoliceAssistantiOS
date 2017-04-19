@@ -498,6 +498,16 @@
             message = errorMessage;
         }
             break;
+        case 11017://该房东下面无房产
+        {
+            message = errorMessage;
+        }
+            break;
+        case 11018://请核实填写姓名与身份证是否为同一人
+        {
+            message = errorMessage;
+        }
+            break;
             
         default:
             break;

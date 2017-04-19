@@ -112,6 +112,8 @@
     dict[@"user_id"] = [landlordModel.user_id toString];
     dict[@"token"] = landlordModel.token;
     dict[@"dep_id"] = [landlordModel.selectedModel.dep_id toString];
+    dict[@"is_self_room"] = [landlordModel.selectedModel.is_self_room toString];
+    dict[@"building_id"] = [landlordModel.selectedModel.building_id toString];
     dict[@"search_name"] = serachKey;
     dict[@"start_page"] = @(0);
     dict[@"page_no"] = @(99999);

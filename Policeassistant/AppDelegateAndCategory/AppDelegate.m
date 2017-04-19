@@ -140,18 +140,6 @@
         }
         
     }
-    
-//    if ([DDUserDefault getLogin]) {
-//        if ([DDUserDefault getJob]) {
-//            [self initPoliceRootViewController];
-//        }else{
-//            [self initHelperRootViewController];
-//        }
-//    }
-//    else{
-//        [self initLoginRootViewController];
-//    }
-//    [self initDDLandlordCenterViewController];
     [self monitorLoginStatusApplication:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
