@@ -11,6 +11,7 @@
 #import "DDHttpRequest.h"
 
 #import "AppDelegate.h"
+#import <Bugly/Bugly.h>
 
 @interface DDLoginVC ()<UITextFieldDelegate>
 {
@@ -131,6 +132,7 @@
     dict[@"user_name"] = [user.text removeContinueLinefeed];;
     dict[@"password"] = pwd.text;
     [DDHttpRequest postWithUrlString:DDUsersLoginUrlStr parms:[DDHttpRequest handleParametersSHA1:dict] success:^(NSData *requestData, NSDictionary *requestDict,NSInteger statusCode) {
+        [Bugly setUserIdentifier:user.text];
         [SVProgressHUD dismiss];
         /***/
         [DDUserDefault setLogin:YES];

@@ -207,6 +207,12 @@
 		41FDBB3B1D2A4FA200163789 /* DDMissHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FDBB3A1D2A4FA200163789 /* DDMissHeadView.m */; };
 		41FDBB441D2A51B600163789 /* DDMissDealCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 41FDBB431D2A51B600163789 /* DDMissDealCell.m */; };
 		41FDBB531D2A802E00163789 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 41FDBB511D2A802E00163789 /* InfoPlist.strings */; };
+		721CD18D1EA85C740049068C /* Bugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721CD18C1EA85C740049068C /* Bugly.framework */; };
+		721CD1901EA85C970049068C /* AppDelegate+ConfigThirdLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = 721CD18F1EA85C970049068C /* AppDelegate+ConfigThirdLibrary.m */; };
+		721CD1931EA85CEE0049068C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721CD1921EA85CEE0049068C /* Security.framework */; };
+		721CD1951EA85CFC0049068C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 721CD1941EA85CFC0049068C /* SystemConfiguration.framework */; };
+		721CD1971EA85D050049068C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 721CD1961EA85D050049068C /* libc++.tbd */; };
+		721CD1991EA85D0D0049068C /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 721CD1981EA85D0D0049068C /* libz.tbd */; };
 		72203FCE1E7641AE00D7FE39 /* CusstomDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72203FCD1E7641AE00D7FE39 /* CusstomDatePickerView.m */; };
 		72203FD31E766D2200D7FE39 /* DDLandlordChooseApplyForIdentifyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72203FD21E766D2200D7FE39 /* DDLandlordChooseApplyForIdentifyView.m */; };
 		72203FD91E76793200D7FE39 /* iPhoneUUID.m in Sources */ = {isa = PBXBuildFile; fileRef = 72203FD81E76793200D7FE39 /* iPhoneUUID.m */; };
@@ -676,6 +682,13 @@
 		41FDBB421D2A51B600163789 /* DDMissDealCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMissDealCell.h; sourceTree = "<group>"; };
 		41FDBB431D2A51B600163789 /* DDMissDealCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMissDealCell.m; sourceTree = "<group>"; };
 		41FDBB521D2A802E00163789 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		721CD18C1EA85C740049068C /* Bugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bugly.framework; sourceTree = "<group>"; };
+		721CD18E1EA85C970049068C /* AppDelegate+ConfigThirdLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+ConfigThirdLibrary.h"; sourceTree = "<group>"; };
+		721CD18F1EA85C970049068C /* AppDelegate+ConfigThirdLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+ConfigThirdLibrary.m"; sourceTree = "<group>"; };
+		721CD1921EA85CEE0049068C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		721CD1941EA85CFC0049068C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		721CD1961EA85D050049068C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		721CD1981EA85D0D0049068C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		72203FCC1E7641AE00D7FE39 /* CusstomDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CusstomDatePickerView.h; sourceTree = "<group>"; };
 		72203FCD1E7641AE00D7FE39 /* CusstomDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CusstomDatePickerView.m; sourceTree = "<group>"; };
 		72203FD11E766D2200D7FE39 /* DDLandlordChooseApplyForIdentifyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLandlordChooseApplyForIdentifyView.h; sourceTree = "<group>"; };
@@ -891,6 +904,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				721CD1991EA85D0D0049068C /* libz.tbd in Frameworks */,
+				721CD1971EA85D050049068C /* libc++.tbd in Frameworks */,
+				721CD1951EA85CFC0049068C /* SystemConfiguration.framework in Frameworks */,
+				721CD1931EA85CEE0049068C /* Security.framework in Frameworks */,
+				721CD18D1EA85C740049068C /* Bugly.framework in Frameworks */,
 				72346AFF1E7A7DE7000E992C /* AliyunOSSiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1065,6 +1083,7 @@
 				419AF42B1D20C9A000450214 /* PoliceassistantTests */,
 				419AF4361D20C9A000450214 /* PoliceassistantUITests */,
 				419AF4101D20C99F00450214 /* Products */,
+				721CD1911EA85CEE0049068C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1251,6 +1270,7 @@
 		419AF4511D20CE7400450214 /* DDLib */ = {
 			isa = PBXGroup;
 			children = (
+				721CD18B1EA85C740049068C /* Bugly */,
 				72346AF61E7A7D8B000E992C /* AliCloud */,
 				722040001E78184300D7FE39 /* AutoCoding */,
 				72203FCB1E7641AE00D7FE39 /* CusstomDatePickerView(自定义选择时间弹框) */,
@@ -1657,6 +1677,25 @@
 			path = DDviews;
 			sourceTree = "<group>";
 		};
+		721CD18B1EA85C740049068C /* Bugly */ = {
+			isa = PBXGroup;
+			children = (
+				721CD18C1EA85C740049068C /* Bugly.framework */,
+			);
+			path = Bugly;
+			sourceTree = "<group>";
+		};
+		721CD1911EA85CEE0049068C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				721CD1981EA85D0D0049068C /* libz.tbd */,
+				721CD1961EA85D050049068C /* libc++.tbd */,
+				721CD1941EA85CFC0049068C /* SystemConfiguration.framework */,
+				721CD1921EA85CEE0049068C /* Security.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		72203FCB1E7641AE00D7FE39 /* CusstomDatePickerView(自定义选择时间弹框) */ = {
 			isa = PBXGroup;
 			children = (
@@ -1940,6 +1979,8 @@
 				72346AEC1E7A2F01000E992C /* AppDelegate.m */,
 				72346AEE1E7A2F41000E992C /* AppDelegate+MonitorLoginStatus.h */,
 				72346AEF1E7A2F41000E992C /* AppDelegate+MonitorLoginStatus.m */,
+				721CD18E1EA85C970049068C /* AppDelegate+ConfigThirdLibrary.h */,
+				721CD18F1EA85C970049068C /* AppDelegate+ConfigThirdLibrary.m */,
 			);
 			path = AppDelegateAndCategory;
 			sourceTree = "<group>";
@@ -2838,6 +2879,7 @@
 				4146A04E1D2E23DD0072A216 /* AFURLRequestSerialization.m in Sources */,
 				4146A05B1D2E23DD0072A216 /* UIWebView+AFNetworking.m in Sources */,
 				724240451E6D7DF2003CCC43 /* DDHorizontalButton.m in Sources */,
+				721CD1901EA85C970049068C /* AppDelegate+ConfigThirdLibrary.m in Sources */,
 				41FD78791D40EF1A009F8696 /* DDButton.m in Sources */,
 				724240341E6D76F9003CCC43 /* DDLandlordSelfHelpAuthorizationCompleteViewController.m in Sources */,
 				7242406D1E6ED61A003CCC43 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
@@ -3206,6 +3248,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Policeassistant/DDLib/AliCloud",
+					"$(PROJECT_DIR)/Policeassistant/DDLib/Bugly",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Policeassistant/DDBase/Policeassistant.pch";
@@ -3233,6 +3276,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Policeassistant/DDLib/AliCloud",
+					"$(PROJECT_DIR)/Policeassistant/DDLib/Bugly",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Policeassistant/DDBase/Policeassistant.pch";

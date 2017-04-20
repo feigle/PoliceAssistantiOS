@@ -50,6 +50,7 @@
 #import "DDLandlordCenterViewController.h"
 
 #import "AppDelegate+MonitorLoginStatus.h"
+#import "AppDelegate+ConfigThirdLibrary.h"
 
 
 @interface AppDelegate ()<UNUserNotificationCenterDelegate>
@@ -140,6 +141,7 @@
         }
         
     }
+    [self configThirdLibraryApplication:application didFinishLaunchingWithOptions:launchOptions];
     [self monitorLoginStatusApplication:application didFinishLaunchingWithOptions:launchOptions];
     return YES;
 }
