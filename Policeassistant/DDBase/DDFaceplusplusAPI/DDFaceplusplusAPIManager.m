@@ -58,10 +58,18 @@ static  NSString const *  DDFaceplusplusAPIManagerAPISecret = @"sHc59bUE5jVUC0mA
                     if ([[cardDataDict[@"type"] toString] isEqualToString:@"1"]) {//看看类型是不是身份证，是身份证，type == 1
                         if ([[cardDataDict[@"side"] toString] isEqualToString:@"front"]) {//判断身份证是正面
                             DDIdentifyCardSideFrontModel * model = [[DDIdentifyCardSideFrontModel alloc] initWithDictionary:cardDataDict error:nil];
-                            finishedBlock(dataDict,IdentifyCardSideFrontType,model,nil);
+                            if ([model checkValue]) {/**检测成功*/
+                                finishedBlock(dataDict,IdentifyCardSideFrontType,model,nil);
+                            } else {
+                                finishedBlock(nil,IdentifyCardTypeErrorType,nil,nil);
+                            }
                         } else {//判断身份证是反面
                             DDIdentifyCardSideBackModel * model = [[DDIdentifyCardSideBackModel alloc] initWithDictionary:cardDataDict error:nil];
-                            finishedBlock(dataDict,IdentifyCardSideBackType,nil,model);
+                            if ([model checkValue]) {
+                                finishedBlock(dataDict,IdentifyCardSideBackType,nil,model);
+                            } else {
+                                finishedBlock(nil,IdentifyCardTypeErrorType,nil,nil);
+                            }
                         }
                     } else {//这里确认不是身份证了
                         finishedBlock(dataDict,IdentifyCardTypeErrorType,nil,nil);

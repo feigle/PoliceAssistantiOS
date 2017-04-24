@@ -198,13 +198,11 @@
 - (NSArray *)detectionFeatures
 {
     CIImage* image = [CIImage imageWithCGImage:self.CGImage];
-    
     NSDictionary  *opts = [NSDictionary dictionaryWithObject:CIDetectorAccuracyHigh
                                                       forKey:CIDetectorAccuracy];
     CIDetector* detector = [CIDetector detectorOfType:CIDetectorTypeFace
                                               context:nil
                                               options:opts];
-    
     //得到面部数据
     NSArray* features = [detector featuresInImage:image];
     return features;

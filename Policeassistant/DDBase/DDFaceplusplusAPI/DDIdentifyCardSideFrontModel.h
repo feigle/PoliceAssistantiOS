@@ -20,4 +20,6 @@
 @property (nonatomic,copy) NSString * side;//front/back 表示身份证的正面或者反面（illegal）
 @property (nonatomic,copy) NSString * type;//证件类型，返回1，代表是身份证。
 
+- (BOOL)checkValue;
+
 @end

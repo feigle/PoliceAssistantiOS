@@ -268,10 +268,8 @@
     NSString *deviceTokenString2 = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<"withString:@""]
                                      
                                      stringByReplacingOccurrencesOfString:@">" withString:@""]
-                                    
                                     stringByReplacingOccurrencesOfString:@" " withString:@""];
     [DDUserDefault setDeviceToken:deviceTokenString2];
-    
 }
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
@@ -279,36 +277,56 @@
 }
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
     //应用在前台收到通知
-    //    NSLog(@"========%@", notification);
+    NSLog(@"========%@", notification);
     NSDictionary *diction=notification.request.content.userInfo;
-    if ([DDUserDefault getJob]) {
-        show_label = [[diction objectForKey:@"aps"] objectForKey:@"alert"];
-        NSString *type = [[diction objectForKey:@"data"] objectForKey:@"response_type"];
-        [self SavePushMessage:type];
-        AudioServicesPlaySystemSound(1002);//播放声音
-    }else{
-        self.is_get_message=YES;
-        self.mission_number =[NSString stringWithFormat:@"%@",[[diction objectForKey:@"data"] objectForKey:@"notice_id"]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+    PoliceAssistantIdentityType type = [DDUserDefault getIdentityType];
+    switch (type) {
+        case PoliceAssistantIdentityPoliceType://民警
+        {
+            show_label = [[diction objectForKey:@"aps"] objectForKey:@"alert"];
+            NSString *type = [[diction objectForKey:@"data"] objectForKey:@"response_type"];
+            [self SavePushMessage:type];
+            AudioServicesPlaySystemSound(1002);//播放声音
+            completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert);
+        }
+            break;
+        case PoliceAssistantIdentityPoliceAssistType://协警
+        {
+            self.is_get_message=YES;
+            self.mission_number =[NSString stringWithFormat:@"%@",[[diction objectForKey:@"data"] objectForKey:@"notice_id"]];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+            completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert);
+        }
+            break;
+        default:
+            break;
     }
-    
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler {
     //点击通知进入应用
     //    NSLog(@"response:%@", response);
     NSDictionary *diction=response.notification.request.content.userInfo;
-    if ([DDUserDefault getJob]) {
-        show_label = [[diction objectForKey:@"aps"] objectForKey:@"alert"];
-        NSString *type = [[diction objectForKey:@"data"] objectForKey:@"response_type"];
-        [self SavePushMessage:type];
-        //    AudioServicesPlaySystemSound(1002);//播放声音
-    }else{
-        self.is_get_message=YES;
-        self.mission_number =[NSString stringWithFormat:@"%@",[[diction objectForKey:@"data"] objectForKey:@"notice_id"]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+    PoliceAssistantIdentityType type = [DDUserDefault getIdentityType];
+    switch (type) {
+        case PoliceAssistantIdentityPoliceType://民警
+        {
+            show_label = [[diction objectForKey:@"aps"] objectForKey:@"alert"];
+            NSString *type = [[diction objectForKey:@"data"] objectForKey:@"response_type"];
+            [self SavePushMessage:type];
+        }
+            break;
+        case PoliceAssistantIdentityPoliceAssistType://协警
+        {
+            self.is_get_message=YES;
+            self.mission_number =[NSString stringWithFormat:@"%@",[[diction objectForKey:@"data"] objectForKey:@"notice_id"]];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+        }
+            break;
+        default:
+            break;
     }
-    
+    completionHandler();  // 系统要求执行这个方法
 }
 
 /**
@@ -317,17 +335,25 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     NSLog(@"userInfo = %@",userInfo);
-    if ([DDUserDefault getJob]) {
-        show_label = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-        NSString *type = [[userInfo objectForKey:@"data"] objectForKey:@"response_type"];
-        [self SavePushMessage:type];
-        //    AudioServicesPlaySystemSound(1002);//播放声音
-    }else{
-        self.is_get_message=YES;
-        self.mission_number =[NSString stringWithFormat:@"%@",[[userInfo objectForKey:@"data"] objectForKey:@"notice_id"]];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+    PoliceAssistantIdentityType type = [DDUserDefault getIdentityType];
+    switch (type) {
+        case PoliceAssistantIdentityPoliceType://民警
+        {
+            show_label = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+            NSString *type = [[userInfo objectForKey:@"data"] objectForKey:@"response_type"];
+            [self SavePushMessage:type];
+        }
+            break;
+        case PoliceAssistantIdentityPoliceAssistType://协警
+        {
+            self.is_get_message=YES;
+            self.mission_number =[NSString stringWithFormat:@"%@",[[userInfo objectForKey:@"data"] objectForKey:@"notice_id"]];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"GetAllMessageNotification" object:nil];
+        }
+            break;
+        default:
+            break;
     }
-    
 }
 /**
  *  注册推送关键

@@ -10,11 +10,9 @@
 #import "DDLoginVC.h"
 
 @interface DDChangePwdViewController ()<UITextFieldDelegate>
-{
-    UITextField *OldPwd;
-    UITextField *NewPwd;
-    UITextField *NewPwdAgin;
-}
+@property (nonatomic,strong) UITextField * OldPwd;
+@property (nonatomic,strong) UITextField * NewPwd;
+@property (nonatomic,strong) UITextField * NewPwdAgin;
 
 
 @end
@@ -25,15 +23,45 @@
     [super viewDidLoad];
     self.navigationItem.title=@"修改密码";
     self.navigationController.navigationBarHidden = NO;
-    OldPwd=[[UITextField alloc]init];
-    NewPwd=[[UITextField alloc]init];
-    NewPwdAgin=[[UITextField alloc]init];
+    _OldPwd=[[UITextField alloc]init];
+    _NewPwd=[[UITextField alloc]init];
+    _NewPwdAgin=[[UITextField alloc]init];
     
-    [self setupOneChildVC:OldPwd WithFrame:CGRectMake(0, 15, KScreenWidth, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请输入旧密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeDefault];
+    [self setupOneChildVC:_OldPwd WithFrame:CGRectMake(0, 15, KScreenWidth, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请输入旧密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeASCIICapable];
+    UIButton * OldPwdBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake(0, 0, 20, 12) target:nil selector:nil];
+    OldPwdBtn.userInteractionEnabled = YES;
+    [OldPwdBtn sizeToFit];
+    WeakSelf
+    [OldPwdBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.OldPwd.secureTextEntry = !sender.selected;
+    }];
+    self.OldPwd.rightView = OldPwdBtn;
+    self.OldPwd.rightViewMode = UITextFieldViewModeAlways;
+
+    [self setupOneChildVC:_NewPwd WithFrame:CGRectMake(0, 65,  KScreenWidth, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请输入新密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeASCIICapable];
+    UIButton * NewPwdBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake(0, 0, 20, 12) target:nil selector:nil];
+    [NewPwdBtn sizeToFit];
+    [NewPwdBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.NewPwd.secureTextEntry = !sender.selected;
+    }];
+    self.NewPwd.rightView = NewPwdBtn;
+    self.NewPwd.rightViewMode = UITextFieldViewModeAlways;
+
+    [self setupOneChildVC:_NewPwdAgin WithFrame:CGRectMake(0, 115,  KScreenWidth-0, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请确认新密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeASCIICapable];
+    UIButton * NewPwdAginBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake(0, 0, 20, 12) target:nil selector:nil];
+    [NewPwdAginBtn sizeToFit];
+    [NewPwdAginBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.NewPwdAgin.secureTextEntry = !sender.selected;
+    }];
+    self.NewPwdAgin.rightView = NewPwdAginBtn;
+    self.NewPwdAgin.rightViewMode = UITextFieldViewModeAlways;
     
-    [self setupOneChildVC:NewPwd WithFrame:CGRectMake(0, 65,  KScreenWidth-0, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请输入新密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeDefault];
-    
-    [self setupOneChildVC:NewPwdAgin WithFrame:CGRectMake(0, 115,  KScreenWidth-0, 50) borderStyle:UITextBorderStyleRoundedRect backgroundColor:[UIColor whiteColor] background:nil withTitle:nil textColor:MAINTEX borderWidth:0 cornerRadius:0 returnKeyType:UIReturnKeyDefault placeholder:@"请确认新密码" font:[UIFont systemFontOfSize:18] clearButtonMode:UITextFieldViewModeWhileEditing textAlignment:NSTextAlignmentLeft keyboardType:UIKeyboardTypeDefault];
     DDButton *button=[[DDButton alloc]initWithFrame:CGRectMake(15, 180,  KScreenWidth-30, 40) withTitle:@"确认修改" touchBlock:^(DDButton *btn){
         [self checkIsSuccess];
     }];
@@ -48,25 +76,25 @@
 }
 
 - (void)checkIsSuccess{
-    if (OldPwd.text.length==0) {
+    if (_OldPwd.text.length==0) {
         [DDProgressHUD showCenterWithText:@"请输入旧密码" duration:1.0];
         return;
-    }else if (![OldPwd.text isEqualToString:[DDUserDefault getPwd]]){
+    }else if (![_OldPwd.text isEqualToString:[DDUserDefault getPwd]]){
         [DDProgressHUD showCenterWithText:@"原密码错误,请重新输入" duration:1.0];
         return;
-    }else if (NewPwd.text.length==0){
+    }else if (_NewPwd.text.length==0){
         [DDProgressHUD showCenterWithText:@"请输入新密码" duration:1.0];
         return;
-    }else if ([DDTools validateStrWithRange:@"{6,12}" str:NewPwd.text]==NO){
+    }else if ([DDTools validateStrWithRange:@"{6,12}" str:_NewPwd.text]==NO){
         [DDProgressHUD showCenterWithText:@"密码输入格式为6到12位的数字加字母组合" duration:1.0];
         return;
-    }else if (NewPwdAgin.text.length==0){
+    }else if (_NewPwdAgin.text.length==0){
         [DDProgressHUD showCenterWithText:@"请确认新密码" duration:1.0];
         return;
-    }else if (![NewPwd.text isEqualToString:NewPwdAgin.text]){
+    }else if (![_NewPwd.text isEqualToString:_NewPwdAgin.text]){
         [DDProgressHUD showCenterWithText:@"新密码输入不一致,请核对后再次输入" duration:1.0];
         return;
-    }else if ([NewPwd.text isEqualToString:OldPwd.text]){
+    }else if ([_NewPwd.text isEqualToString:_OldPwd.text]){
         [DDProgressHUD showCenterWithText:@"新旧密码一致,无法更改" duration:1.0];
         return;
     }else{
@@ -78,7 +106,7 @@
     AFHTTPSessionManager *Afmanger=[DDNetManger sharedAFManager];
     [Afmanger.requestSerializer setAuthorizationHeaderFieldWithUsername:[DDUserDefault getUserName] password:[DDUserDefault getPwd]];
     NSString *url =[NSString stringWithFormat:@"%@",API_BASE_URL(@"v1/site/changepasswd")];
-    NSMutableDictionary *dicts = [NSMutableDictionary dictionaryWithObjectsAndKeys:NewPwd.text,@"password",OldPwd.text,@"oldpassword",nil];
+    NSMutableDictionary *dicts = [NSMutableDictionary dictionaryWithObjectsAndKeys:_NewPwd.text,@"password",_OldPwd.text,@"oldpassword",nil];
     [DDNetManger ba_requestWithType:DDHttpRequestTypeGet withUrlString:url withParameters:dicts withSuccessBlock:^(id response) {
         [SVProgressHUD dismiss];
         /*! 新增get请求缓存，飞行模式下开启试试看！ */
@@ -200,12 +228,12 @@
     
     //输入框中是否有个叉号，在什么时候显示，用于一次性删除输入框中的内容
     
-    text.clearButtonMode = clearButtonMode;
+//    text.clearButtonMode = clearButtonMode;
     
     //边框颜色
    // text.layer.borderColor = [[UIColor colorWithRed:0 green:188/255.0 blue:236/255.0 alpha:1] CGColor];
     //每输入一个字符就变成点 用语密码输入
-    text.secureTextEntry = NO;
+    text.secureTextEntry = YES;
     
     //设置代理 用于实现协议
     
@@ -217,12 +245,20 @@
 }
 #pragma mark  － ---------textField 代理---------
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
-    if ([string isEqualToString:@"\n"])  {
-        [textField resignFirstResponder];
+    if (string.length > 0) {
+        if ([string removeBlank].length == 0) {
+            return NO;
+        }
+    }
+    if (range.location>=12) {
         return NO;
+    }else{
+        return YES;
     }
     return YES;
 }
+
+
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
 }

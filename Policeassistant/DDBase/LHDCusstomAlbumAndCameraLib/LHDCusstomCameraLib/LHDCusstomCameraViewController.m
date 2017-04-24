@@ -20,7 +20,9 @@ typedef NS_ENUM(NSInteger, LHDCameraFlashType) {
 };
 
 @interface LHDCusstomCameraViewController ()<UIGestureRecognizerDelegate>
-
+{
+    UIPinchGestureRecognizer *pinch;
+}
 /** session 用于数据传递*/
 @property (nonatomic,strong) AVCaptureSession *captureSession;
 /**输入设备*/
@@ -68,7 +70,6 @@ typedef NS_ENUM(NSInteger, LHDCameraFlashType) {
     if (self.captureSession) {
         [self.captureSession stopRunning];
     }
-    
 }
 
 
@@ -105,7 +106,7 @@ typedef NS_ENUM(NSInteger, LHDCameraFlashType) {
         [self.captureSession addOutput:self.imageOutPut];
     }
     [self.view addSubview:self.previewView];
-    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
+     pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchGesture:)];
     pinch.delegate = self;
     [self.previewView addGestureRecognizer:pinch];
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
@@ -334,6 +335,8 @@ typedef NS_ENUM(NSInteger, LHDCameraFlashType) {
 #pragma mark - 取消按钮点击事件
 - (void)cancelBtnClicked
 {
+    pinch.delegate = nil;
+    self.imageOutPut = nil;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

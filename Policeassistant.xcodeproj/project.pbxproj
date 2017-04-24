@@ -321,6 +321,7 @@
 		7257E6741E79679400898BEB /* MyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7257E6731E79679400898BEB /* MyAlertView.m */; };
 		72815F0D1E7B8A4B0064CFE5 /* DDLandlordRecordEmptyListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72815F0C1E7B8A4B0064CFE5 /* DDLandlordRecordEmptyListView.m */; };
 		72CC7E821E7FC516006865B4 /* NSData+LHDHandleTooles.m in Sources */ = {isa = PBXBuildFile; fileRef = 72CC7E811E7FC516006865B4 /* NSData+LHDHandleTooles.m */; };
+		72E03E341EA9A55900691843 /* DDForbidOperationTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E03E331EA9A55900691843 /* DDForbidOperationTextField.m */; };
 		72E338D11E6D502500060DE8 /* DDScreenFitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E338CD1E6D502500060DE8 /* DDScreenFitter.m */; };
 		72E338D21E6D502500060DE8 /* UIView+DDFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E338D01E6D502500060DE8 /* UIView+DDFrame.m */; };
 /* End PBXBuildFile section */
@@ -892,6 +893,8 @@
 		72815F0C1E7B8A4B0064CFE5 /* DDLandlordRecordEmptyListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLandlordRecordEmptyListView.m; sourceTree = "<group>"; };
 		72CC7E801E7FC516006865B4 /* NSData+LHDHandleTooles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+LHDHandleTooles.h"; sourceTree = "<group>"; };
 		72CC7E811E7FC516006865B4 /* NSData+LHDHandleTooles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+LHDHandleTooles.m"; sourceTree = "<group>"; };
+		72E03E321EA9A55300691843 /* DDForbidOperationTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDForbidOperationTextField.h; sourceTree = "<group>"; };
+		72E03E331EA9A55900691843 /* DDForbidOperationTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDForbidOperationTextField.m; sourceTree = "<group>"; };
 		72E338CC1E6D502500060DE8 /* DDScreenFitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDScreenFitter.h; sourceTree = "<group>"; };
 		72E338CD1E6D502500060DE8 /* DDScreenFitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDScreenFitter.m; sourceTree = "<group>"; };
 		72E338CE1E6D502500060DE8 /* DDScreenFitterHeaderHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDScreenFitterHeaderHeader.h; sourceTree = "<group>"; };
@@ -2436,6 +2439,8 @@
 		7242403D1E6D7DF2003CCC43 /* Inherit */ = {
 			isa = PBXGroup;
 			children = (
+				72E03E321EA9A55300691843 /* DDForbidOperationTextField.h */,
+				72E03E331EA9A55900691843 /* DDForbidOperationTextField.m */,
 				7242403E1E6D7DF2003CCC43 /* DDHorizontalButton.h */,
 				7242403F1E6D7DF2003CCC43 /* DDHorizontalButton.m */,
 				724240401E6D7DF2003CCC43 /* DDVerticalButton.h */,
@@ -2712,7 +2717,7 @@
 								enabled = 1;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -2960,6 +2965,7 @@
 				7242FA841E704D00004DCD9A /* DDLandlordSelfHelpAuthorizationChooseRoomCell.m in Sources */,
 				4146A0581D2E23DD0072A216 /* UIImageView+AFNetworking.m in Sources */,
 				722040631E78D65400D7FE39 /* LHDCusstomCameraPreviewViewController.m in Sources */,
+				72E03E341EA9A55900691843 /* DDForbidOperationTextField.m in Sources */,
 				722040761E78D81C00D7FE39 /* UIImageView+LHDSize.m in Sources */,
 				4123BD861D4B4698009A6C0C /* DDLeftSliderVC.m in Sources */,
 				41D009101D34E24E00798383 /* DDCellSearchVC.m in Sources */,
@@ -3185,7 +3191,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -3227,7 +3233,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -205,6 +205,12 @@
     cameraVC.fromeViewController = self;
     [cameraVC cusstomCameraGetPhotoImageBlock:^(LHDCusstomCameraViewController *cameraVC, UIImage *image) {
         StrongSelf
+        if (image) {
+            if ([image detectionFeatures].count !=1) {
+                [DDProgressHUD showCenterWithText:@"请上传身份证正面照片！" duration:3.0];
+                return ;
+            }
+        }
         strongSelf.identifyCardFrontImageView.image = image;
         strongSelf.uploadIdentifyCardFrontLoadingView.hidden = NO;
         strongSelf.identifyCardFrontImageView.userInteractionEnabled = NO;
@@ -222,7 +228,7 @@
                 strongSelf.identifyCardFrontModel = frontModel;
                 [strongSelf uploadIdentifyCardFrontData:nil];
             } else {//不是正面的
-                [DDProgressHUD showCenterWithText:@"请上传身份证正面照片！" duration:1.5];
+                [DDProgressHUD showCenterWithText:@"请上传身份证正面照片！" duration:3.0];
                 strongSelf.identifyCardFrontEditImageView.hidden = YES;
                 strongSelf.identifyCardFrontImageView.image = [UIImage imageNamed:@"DDLandlordSelfHelpAuthorizationIdentifyCardFront"];
                 strongSelf.identifyCardFrontModel = nil;
@@ -259,7 +265,7 @@
                 strongSelf.identifyCardBackModel = backModel;
                 [strongSelf uploadIdentifyCardBackData:nil];
             } else {//不是反面的
-                [DDProgressHUD showCenterWithText:@"请上传身份证反面照片！" duration:1.5];
+                [DDProgressHUD showCenterWithText:@"请上传身份证反面照片！" duration:3.0];
                 strongSelf.identifyCardBehindEditImageView.hidden = YES;
                 strongSelf.identifyCardBehindImageView.image = [UIImage imageNamed:@"DDLandlordSelfHelpAuthorizationIdentifyCardBehind"];
                 strongSelf.identifyCardBackModel = nil;
@@ -280,11 +286,19 @@
     [cameraVC cusstomCameraGetPhotoImageBlock:^(LHDCusstomCameraViewController *cameraVC, UIImage *image) {
         StrongSelf
         strongSelf.authorizationModel.card_img3 = nil;
-        strongSelf.handIdentifyCardImageView.image = image;
-        strongSelf.uploadHandIdentifyCardLoadingView.hidden = NO;
-        strongSelf.handIdentifyCardImageView.userInteractionEnabled = NO;
-        strongSelf.isSelectedHandIdentifyCard = YES;
-        [strongSelf uploadHandIdentifyCarData:nil];
+        if ([image detectionFeatures].count == 1 ||[image detectionFeatures].count == 2) {
+            strongSelf.handIdentifyCardImageView.image = image;
+            strongSelf.uploadHandIdentifyCardLoadingView.hidden = NO;
+            strongSelf.isSelectedHandIdentifyCard = YES;
+            [strongSelf uploadHandIdentifyCarData:nil];
+        } else {//
+            strongSelf.isSelectedHandIdentifyCard = NO;
+            strongSelf.uploadHandIdentifyCardLoadingView.hidden = YES;
+            [strongSelf.uploadHandIdentifyCardLoadingView removeFromSuperview];
+            strongSelf.uploadHandIdentifyCardLoadingView = nil;
+            [DDProgressHUD showCenterWithText:@"请手持身份证拍照！" duration:3.0];
+            strongSelf.handIdentifyCardImageView.image = [UIImage imageNamed:@"DDLandlordSelfHelpAuthorizationIdentifyCardHand"];
+        }
     }];
     [cameraVC show];
 }
@@ -357,7 +371,7 @@
     }
     WeakSelf
     self.isInProcessOfUploadIdentifyHandCard = YES;
-    self.handIdentifyCardImageView.userInteractionEnabled = NO;
+    self.handIdentifyCardBgImageView.userInteractionEnabled = NO;
     self.handIdentifyCardEditImageView.hidden = YES;
     DDLandlordUserModel * userModel = landlordUserModel;
     [[[AliCloudUtil alloc] initWithUserID:userModel.user_id deviceUDID:[iPhoneUUID getUUIDString]] uploadImageWithimageData:[DDFaceplusplusAPIManager returnIdentifyCardWithImage:self.handIdentifyCardImageView.image] imageName:[[NSUUID UUID] UUIDString] AliCloudDirType:AliCloudDirTypeIdCards successBlock:^(NSString *objectKey) {
@@ -367,7 +381,7 @@
         strongSelf.uploadHandIdentifyCardLoadingView.hidden = YES;
         [strongSelf.uploadHandIdentifyCardLoadingView removeFromSuperview];
         strongSelf.uploadHandIdentifyCardLoadingView = nil;
-        strongSelf.handIdentifyCardImageView.userInteractionEnabled = YES;
+        strongSelf.handIdentifyCardBgImageView.userInteractionEnabled = YES;
         strongSelf.authorizationModel.card_img3 = objectKey;
         if (block) {
             block(YES);
@@ -379,7 +393,7 @@
         strongSelf.uploadHandIdentifyCardLoadingView.hidden = YES;
         [strongSelf.uploadHandIdentifyCardLoadingView removeFromSuperview];
         strongSelf.uploadHandIdentifyCardLoadingView = nil;
-        strongSelf.handIdentifyCardImageView.userInteractionEnabled = YES;
+        strongSelf.handIdentifyCardBgImageView.userInteractionEnabled = YES;
         strongSelf.authorizationModel.card_img3 = nil;
         if (block) {
             block(NO);
@@ -468,6 +482,8 @@
             self.contentBgScrollView.contentSize = CGSizeMake(KScreenWidth, imageView.bottom+15*kScreen6ScaleH);
         }
     }
+    self.applyForIdentifyLabel.text = @"租客";
+    self.authorizationModel.auth_type = @"2";//默认租客
 }
 #pragma mark - 全局的  懒加载在这里
 /**显示中间的内容背景，用UIScrollView，可以上下滑动*/

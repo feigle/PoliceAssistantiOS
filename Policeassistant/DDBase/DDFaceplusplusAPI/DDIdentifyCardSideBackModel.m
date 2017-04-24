@@ -10,4 +10,15 @@
 
 @implementation DDIdentifyCardSideBackModel
 
+- (BOOL)checkValue
+{
+    if (![[self.type toString] isEqualToString:@"1"]) {
+        return NO;
+    }
+    if ([self.issued_by toString].length && [self.side toString].length && [self.type toString].length) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

@@ -16,4 +16,6 @@
 @property (nonatomic,copy) NSString * type;//证件类型，返回1，代表是身份证。
 @property (nonatomic,copy) NSString * valid_date;//有效日期，格式为一个16位长度的字符串，表示内容如下YYYY.MM.DD-YYYY.MM.DD，或是YYYY.MM.DD-长期。
 
+- (BOOL)checkValue;
+
 @end

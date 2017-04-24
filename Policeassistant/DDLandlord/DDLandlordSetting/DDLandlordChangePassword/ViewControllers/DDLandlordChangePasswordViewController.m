@@ -8,7 +8,7 @@
 
 #import "DDLandlordChangePasswordViewController.h"
 
-@interface DDLandlordChangePasswordViewController ()
+@interface DDLandlordChangePasswordViewController ()<UITextFieldDelegate>
 
 /**输入内容的地方，背景view*/
 @property (nonatomic,strong) UIView * contentBgView;
@@ -90,8 +90,38 @@
     [self.contentBgView addSubview:self.oldPasswordTextField];
     [self.contentBgView addSubview:self.nnewPasswordTextField];
     [self.contentBgView addSubview:self.confirmNnewPasswordTextField];
+    UIButton * oldPasswordBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake6(0, 0, 20, 20) target:nil selector:nil];
+    oldPasswordBtn.left = self.oldPasswordTextField.right;
+    oldPasswordBtn.centerY = self.oldPasswordTextField.centerY;
+    WeakSelf
+    [oldPasswordBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.oldPasswordTextField.secureTextEntry = !sender.selected;
+    }];
+    [self.contentBgView addSubview:oldPasswordBtn];
     self.nnewPasswordTextField.top = self.oldPasswordTextField.bottom;
+    UIButton * nnewPasswordBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake6(0, 0, 20, 20) target:nil selector:nil];
+    nnewPasswordBtn.left = self.nnewPasswordTextField.right;
+    nnewPasswordBtn.centerY = self.nnewPasswordTextField.centerY;
+
+    [nnewPasswordBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.nnewPasswordTextField.secureTextEntry = !sender.selected;
+    }];
+    [self.contentBgView addSubview:nnewPasswordBtn];
     self.confirmNnewPasswordTextField.top = self.nnewPasswordTextField.bottom;
+    UIButton * confirmNnewPasswordBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake6(0, 0, 20, 20) target:nil selector:nil];
+    confirmNnewPasswordBtn.left = self.confirmNnewPasswordTextField.right;
+    confirmNnewPasswordBtn.centerY = self.confirmNnewPasswordTextField.centerY;
+    
+    [confirmNnewPasswordBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.confirmNnewPasswordTextField.secureTextEntry = !sender.selected;
+    }];
+    [self.contentBgView addSubview:confirmNnewPasswordBtn];
     /**添加线*/
     [self.contentBgView addSubview:[self lineViewTop:self.nnewPasswordTextField.top-0.25]];
     [self.contentBgView addSubview:[self lineViewTop:self.confirmNnewPasswordTextField.top-0.25]];
@@ -100,13 +130,30 @@
     self.confirmChangeButton.top6 = self.contentBgView.bottom6 + 15;
     
 }
+#pragma mark -
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if (string.length > 0) {
+        if ([string removeBlank].length == 0) {
+            return NO;
+        }
+    }
+    if (range.location>=12) {
+        return NO;
+    }else{
+        return YES;
+    }
+    return YES;
+}
+
 #pragma mark - 界面用到的懒加载方法都在这里
 /**旧密码*/
 - (UITextField *)oldPasswordTextField
 {
     if (!_oldPasswordTextField) {
-        _oldPasswordTextField = [ControlManager textFieldWithFrame:CGRectMake6(15, 0, kScreen6Width-30, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请输入旧密码"];
+        _oldPasswordTextField = [ControlManager textFieldForbidOperationWithFrame:CGRectMake6(15, 0, kScreen6Width-30-20, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请输入旧密码"];
         _oldPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _oldPasswordTextField.keyboardType = UIKeyboardTypeASCIICapable;
+        _oldPasswordTextField.delegate = self;
         //密文样式
         _oldPasswordTextField.borderStyle=UITextBorderStyleNone;
         _oldPasswordTextField.secureTextEntry=YES;
@@ -117,8 +164,10 @@
 - (UITextField *)nnewPasswordTextField
 {
     if (!_nnewPasswordTextField) {
-        _nnewPasswordTextField = [ControlManager textFieldWithFrame:CGRectMake6(15, 0, kScreen6Width-30, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请输入新密码"];
+        _nnewPasswordTextField = [ControlManager textFieldForbidOperationWithFrame:CGRectMake6(15, 0, kScreen6Width-30-20, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请输入新密码"];
+        _nnewPasswordTextField.delegate = self;
         _nnewPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        _nnewPasswordTextField.keyboardType = UIKeyboardTypeASCIICapable;
         //密文样式
         _nnewPasswordTextField.secureTextEntry=YES;
         _nnewPasswordTextField.borderStyle=UITextBorderStyleNone;
@@ -129,9 +178,11 @@
 - (UITextField *)confirmNnewPasswordTextField
 {
     if (!_confirmNnewPasswordTextField) {
-        _confirmNnewPasswordTextField = [ControlManager textFieldWithFrame:CGRectMake6(15, 0, kScreen6Width-30, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请确认新密码"];
+        _confirmNnewPasswordTextField = [ControlManager textFieldForbidOperationWithFrame:CGRectMake6(15, 0, kScreen6Width-30-20, 94/2.0) font:font6Size(16) textColor:nil placeholder:@"请确认新密码"];
+        _confirmNnewPasswordTextField.delegate = self;
         _confirmNnewPasswordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         //密文样式
+        _confirmNnewPasswordTextField.keyboardType = UIKeyboardTypeASCIICapable;
         _confirmNnewPasswordTextField.secureTextEntry=YES;
         _confirmNnewPasswordTextField.borderStyle=UITextBorderStyleNone;
     }

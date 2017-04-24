@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DDForbidOperationTextField.h"
 
 @interface ControlManager : NSObject
 
@@ -65,6 +66,10 @@
 + (UITextField *)textFieldWithFrame:(CGRect)frame font:(UIFont*)font textColor:(UIColor*)textColor;
 /**得到UITextField控件*/
 + (UITextField *)textFieldWithFrame:(CGRect)frame;
+
+/**text、font、textColor、placeholder得到UITextField控件，禁止粘贴、复制、剪切、全选*/
++ (DDForbidOperationTextField *)textFieldForbidOperationWithFrame:(CGRect)frame font:(UIFont*)font textColor:(UIColor*)textColor placeholder:(NSString *)placeholder;
+
 
 /**得到UIScrollView控件*/
 + (UIScrollView *)scrollViewWithFrame:(CGRect)frame isBounces:(BOOL)isBounces isShowVerticalScrollIndicator:(BOOL)isShowVerticalScrollIndicator isShowHorizontalScrollIndicator:(BOOL)isShowHorizontalScrollIndicator;

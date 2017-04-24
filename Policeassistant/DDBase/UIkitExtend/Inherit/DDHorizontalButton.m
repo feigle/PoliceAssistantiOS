@@ -85,7 +85,15 @@
         self.height = titleSize.height;
     }
     CGFloat width = titleSize.width+self.padding+imageSize.width;
-    self.width = width;
+    if (self.maxWidth) {//说明有值
+        CGFloat titleMaxWidth = self.maxWidth - self.padding -imageSize.width;
+        if (titleSize.width > titleMaxWidth) {
+            self.titleLabel.width = titleMaxWidth;
+        }
+        self.width = self.maxWidth;
+    } else {
+        self.width = width;
+    }
 }
 
 /*

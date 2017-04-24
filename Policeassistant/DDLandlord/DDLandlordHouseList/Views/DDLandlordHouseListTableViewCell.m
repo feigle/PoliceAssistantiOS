@@ -45,6 +45,7 @@
         _nameLabel = [ControlManager lableFrame:CGRectMake6(15, 0, kScreen6Width-30-50, 0) font:font6Size(36/2.0) textColor:ColorHex(@"#3F3F3F")];
         _nameLabel.height = font6Size(36/2.0).lineHeight;
         _nameLabel.text = @"和谐小区";
+        _nameLabel.lineBreakMode = NSLineBreakByTruncatingHead;
     }
     return _nameLabel;
 }

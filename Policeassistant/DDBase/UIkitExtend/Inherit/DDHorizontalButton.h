@@ -20,5 +20,7 @@
 @property (nonatomic,assign) BOOL titleIsRight;
 /**自适应*/
 @property (nonatomic,assign) BOOL sizeFit;
+/**最大宽度*/
+@property (nonatomic,assign) CGFloat maxWidth;
 
 @end

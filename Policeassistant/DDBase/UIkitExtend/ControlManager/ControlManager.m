@@ -249,6 +249,20 @@
     return textField;
 }
 
+/**text、font、textColor、placeholder得到UITextField控件，禁止粘贴、复制、剪切、全选*/
++ (DDForbidOperationTextField *)textFieldForbidOperationWithFrame:(CGRect)frame font:(UIFont*)font textColor:(UIColor*)textColor placeholder:(NSString *)placeholder
+{
+    DDForbidOperationTextField * textField = [[DDForbidOperationTextField alloc] initWithFrame:frame];
+    if (font) {
+        textField.font = font;
+    }
+    if (textColor) {
+        textField.textColor = textColor;
+    }
+    textField.placeholder = placeholder;
+    return textField;
+}
+
 /**
  *  得到UIScrollView控件
  */

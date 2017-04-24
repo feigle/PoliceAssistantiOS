@@ -14,10 +14,9 @@
 #import <Bugly/Bugly.h>
 
 @interface DDLoginVC ()<UITextFieldDelegate>
-{
-    UITextField *pwd;
-    UITextField *user;
-}
+@property (nonatomic,strong) UITextField * pwd;
+@property (nonatomic,strong) UITextField * user;
+
 @end
 
 @implementation DDLoginVC
@@ -54,24 +53,35 @@
     DDLabel *lab2=[[DDLabel alloc]initWithAlertViewHeight:18 mycolor:TEXCOLOR myfram:CGRectMake(15, 57, 40, 18) mytext:@"密码"];
     [loginView addSubview:lab2];
     
-    user=[self createTextFielfFrame:CGRectMake(60, 19, loginView.frame.size.width-60, 18) font:[UIFont systemFontOfSize:18] placeholder:@"请输入账号即手机号码"];
-    user.delegate=self;
-    user.keyboardType=UIKeyboardTypeNumberPad;
-    user.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _user = [ControlManager textFieldForbidOperationWithFrame:CGRectMake(60, 19, loginView.frame.size.width-60, 18) font:[UIFont systemFontOfSize:18] textColor:nil placeholder:@"请输入账号即手机号码"];
+    
+    _user.delegate=self;
+    _user.keyboardType=UIKeyboardTypeNumberPad;
+    _user.clearButtonMode = UITextFieldViewModeWhileEditing;
     if ([DDUserDefault getloginName]) {
-        user.text=[DDUserDefault getloginName];
+        _user.text=[DDUserDefault getloginName];
     }
     
-    pwd=[self createTextFielfFrame:CGRectMake(60, 57, loginView.frame.size.width-60, 18) font:[UIFont systemFontOfSize:18]  placeholder:@"请输入密码" ];
-    pwd.clearButtonMode = UITextFieldViewModeWhileEditing;
+    _pwd = [ControlManager textFieldForbidOperationWithFrame:CGRectMake(60, 57, loginView.frame.size.width-60-25, 18) font:[UIFont systemFontOfSize:18] textColor:nil placeholder:@"请输入密码"];
+    _pwd.clearButtonMode = UITextFieldViewModeWhileEditing;
     //密文样式
-    pwd.keyboardType=UIKeyboardTypeNumbersAndPunctuation;
-    pwd.secureTextEntry=YES;
-    pwd.delegate=self;
+    _pwd.keyboardType=UIKeyboardTypeASCIICapable;
+    _pwd.secureTextEntry=YES;
+    _pwd.delegate=self;
     
-    [loginView addSubview:user];
-    [loginView addSubview:pwd];
+    UIButton * confirmNnewPasswordBtn = [ControlManager buttonNormalImage:@"commonPasswordHideImage" selectImageName:@"commonPasswordShowImage" frame:CGRectMake(0, 0, 20, 20) target:nil selector:nil];
+    confirmNnewPasswordBtn.left = _pwd.right;
+    confirmNnewPasswordBtn.centerY = _pwd.centerY;
     
+    [confirmNnewPasswordBtn addClickedHandle:^(UIButton *sender) {
+        StrongSelf
+        sender.selected = !sender.selected;
+        strongSelf.pwd.secureTextEntry = !sender.selected;
+    }];
+    [loginView addSubview:_user];
+    [loginView addSubview:_pwd];
+    [loginView addSubview:confirmNnewPasswordBtn];
+
 }
 -(UITextField *)createTextFielfFrame:(CGRect)frame font:(UIFont *)font placeholder:(NSString *)placeholder
 {
@@ -93,33 +103,52 @@
         [textField resignFirstResponder];
         return NO;
     }
+    if (string.length > 0) {
+        if ([string removeBlank].length == 0) {
+            return NO;
+        }
+    }
+    if (textField == _pwd) {
+        if (range.location>=12) {
+            return NO;
+        }else{
+            return YES;
+        }
+    }
+    if (textField == _user) {
+        if (range.location>=11) {
+            return NO;
+        }else{
+            return YES;
+        }
+    }
     return YES;
 }
 
 -(void)touchesEnded:(nonnull NSSet<UITouch *> *)touches withEvent:(nullable UIEvent *)event
 {
-    [user resignFirstResponder];
-    [pwd resignFirstResponder];
+    [_user resignFirstResponder];
+    [_pwd resignFirstResponder];
 }
 
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [user resignFirstResponder];
-    [pwd resignFirstResponder];
+    [_user resignFirstResponder];
+    [_pwd resignFirstResponder];
 }
 -(void)push{
-    if ([user.text isEqualToString:@""])
+    if ([_user.text isEqualToString:@""])
     {
         [DDProgressHUD showCenterWithText:@"请输入账号" duration:2.0];
         return;
-    }else if ([pwd.text isEqualToString:@""])
+    }else if ([_pwd.text isEqualToString:@""])
     {
         [DDProgressHUD showCenterWithText:@"请输入密码" duration:2.0];
         return;
     }else{
         [self.view endEditing:YES];
-        [DDUserDefault setloginName:user.text];
+        [DDUserDefault setloginName:_user.text];
         [self getNetWorkData];
     }
 
@@ -129,15 +158,17 @@
 {
     [SVProgressHUD showWithStatus:@"正在登录..."];
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
-    dict[@"user_name"] = [user.text removeContinueLinefeed];;
-    dict[@"password"] = pwd.text;
+    dict[@"user_name"] = [_user.text removeContinueLinefeed];;
+    dict[@"password"] = _pwd.text;
+    WeakSelf
     [DDHttpRequest postWithUrlString:DDUsersLoginUrlStr parms:[DDHttpRequest handleParametersSHA1:dict] success:^(NSData *requestData, NSDictionary *requestDict,NSInteger statusCode) {
-        [Bugly setUserIdentifier:user.text];
+        StrongSelf
+        [Bugly setUserIdentifier:strongSelf.user.text];
         [SVProgressHUD dismiss];
         /***/
         [DDUserDefault setLogin:YES];
-        [DDUserDefault setUserName:user.text];
-        [DDUserDefault setPwd:pwd.text];
+        [DDUserDefault setUserName:strongSelf.user.text];
+        [DDUserDefault setPwd:strongSelf.pwd.text];
         [DDUserDefault setLoginforMation:requestDict];
         [DDUserDefault setLoginToken:requestDict[@"token"]];
         /**以上这些是为了保持，民警 和 协警 的老数据逻辑*/
@@ -177,7 +208,7 @@
                 [DDUserDefault setIdentityType:PoliceAssistantIdentityLandlordType];
                 [DDLandlordUserModel refreshUserInfoData:requestDict];
                 DDLandlordUserModel * userModel = landlordUserModel;
-                userModel.user_name = [user.text removeBlank];
+                userModel.user_name = [strongSelf.user.text removeBlank];
                 userModel.isLogin = YES;
                 [DDLandlordUserModel saveMySelf];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_LOGINCHANGE object:@(PoliceAssistantIdentityLandlordType)];

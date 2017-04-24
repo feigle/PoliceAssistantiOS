@@ -45,7 +45,7 @@
     submitLabel.centerX = KScreenWidth/2.0;
     submitLabel.top6 = imageView.bottom6 + 15;
     [self.view addSubview:submitLabel];
-    UILabel * submitDesLabel = [ControlManager lableFrame:CGRectMake6(100/2.0, submitLabel.bottom6+15, kScreen6Width-100, 0) title:@"恭喜您已完成APP授权，如果您开通了门禁卡授权，请携带门禁卡与系统发放的唯一验证码前往指定的门禁机进行卡授权操作，谢谢！" font:font6Size(28/2.0) textColor:ColorHex(@"#4A4A4A")];
+    UILabel * submitDesLabel = [ControlManager lableFrame:CGRectMake6(100/2.0, submitLabel.bottom6+15, kScreen6Width-100, 0) title:@"恭喜您已完成授权，如果您开通了门禁卡授权，请携带门禁卡与系统发放的唯一验证码前往指定的门禁机进行卡授权操作，谢谢！" font:font6Size(28/2.0) textColor:ColorHex(@"#4A4A4A")];
     submitDesLabel.numberOfLines = 0;
     submitDesLabel.centerX = KScreenWidth/2.0;
     [submitDesLabel setStringHeight];
