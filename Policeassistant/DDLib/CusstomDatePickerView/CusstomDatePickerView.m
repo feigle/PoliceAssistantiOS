@@ -33,10 +33,32 @@
 {
     self = [super initWithFrame:CGRectMake(0, 0, KScreenWidth, KScreenHeight)];
     if (self) {
+        //注册登录状态监听
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(loginStateChange:)
+                                                     name:KNOTIFICATION_LOGINCHANGE
+                                                   object:nil];
         [self configUIDatePickerMode:datePickerMode timeBackType:timeBackType maximumDate:maximumDate minimumDate:minimumDate defaultDate:defaultDate title:title];
     }
     return self;
 }
+
+- (void)loginStateChange:(NSNotification *)notification
+{
+    /**[1=>'管理员',2=>'民警',3=>'协警',4=>'保安',5=>'物业',6=>'房东'];*/
+    /**登录身份*/
+    PoliceAssistantIdentityType identityType = [notification.object integerValue];
+    switch (identityType) {
+        case PoliceAssistantNoLoginType://没有登录
+        {
+            [self dismiss];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 
 /**
     初始化界面
@@ -248,6 +270,8 @@
     if (self.canelBlock) {
         self.canelBlock();
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:KNOTIFICATION_LOGINCHANGE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     WeakSelf
     [UIView animateWithDuration:0.3 delay:0 options: UIViewAnimationOptionCurveEaseOut animations:^{
         StrongSelf

@@ -12,6 +12,7 @@
 #import "DDLandlordRecordChoseAuthorizationPopView.h"
 #import "CusstomDatePickerView.h"
 
+
 @interface DDLandlordRecordDetailViewController ()
 
 /**下一步点击按钮*/
@@ -192,7 +193,18 @@
     if (!self.appAuthorizationButton.selected && !self.cardAuthorizationButton.selected) {
         return;
     }
-    CusstomDatePickerView * pickerView = [[CusstomDatePickerView alloc] initWithDatePickerMode:UIDatePickerModeDate timeBackType:NianYueRiState maximumDate:nil minimumDate:[self.startAuthorizationTimeDate returnAfterAFewDayDateWithNumber:1] defaultDate:self.endAuthorizationTimeDate title:@"授权结束时间"];
+    NSDate * minimumDate = nil;
+    NSComparisonResult result = [self.startAuthorizationTimeDate compare:[NSDate date]];
+    if (result == NSOrderedAscending) {
+        if ([[[NSDate date] returnDateStringWithDateFormat:@"yyyy-MM-dd"] isEqualToString:[self.startAuthorizationTimeDate returnDateStringWithDateFormat:@"yyyy-MM-dd"]]) {
+            minimumDate = [self.startAuthorizationTimeDate returnAfterAFewDayDateWithNumber:1];
+        } else {
+            minimumDate = [NSDate date];
+        }
+    } else {
+        minimumDate = [self.startAuthorizationTimeDate returnAfterAFewDayDateWithNumber:1];
+    }
+    CusstomDatePickerView * pickerView = [[CusstomDatePickerView alloc] initWithDatePickerMode:UIDatePickerModeDate timeBackType:NianYueRiState maximumDate:nil minimumDate:minimumDate defaultDate:minimumDate title:@"授权结束时间"];
     WeakSelf
     [pickerView getCusstomDatePickerViewWithBlock:^(CusstomDatePickerView *pickerView, NSString *dateString, NSDate *selectedDate) {
     } doneBlock:^(CusstomDatePickerView *pickerView, NSString *dateString, NSDate *selectedDate) {

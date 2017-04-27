@@ -49,7 +49,6 @@
     }
 }
 
-
 #pragma mark - UISearchBarDelegate
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
@@ -63,6 +62,17 @@
         self.searchButtonCancelBlock(self,searchBar);
     }
 }
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
+    searchBar.showsCancelButton = YES;
+    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
+        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
+            UIButton * cancel =(UIButton *)view;
+            [cancel setTitle:@"取消" forState:UIControlStateNormal];
+            cancel.titleLabel.font = [UIFont systemFontOfSize:14];
+        }
+    }
+}
+
 /**搜索点击按钮*/
 - (void)searchButtonClickedBlock:(DDBaseSearchBarSearchButtonClickedSearchVCBlock)block
 {

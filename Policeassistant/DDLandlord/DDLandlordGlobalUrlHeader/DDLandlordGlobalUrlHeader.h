@@ -11,9 +11,12 @@
 
 #import "DDLandlordUserModel.h"
 
-
+//
 #if DDReleaseStatus
+//预发布
 #define DDLandlordBaseUrl     @"https://ssl.beta.doordu.com:8001/police/"
+//发布
+//#define DDLandlordBaseUrl     @"https://ddapp.doordu.com:8001/police/"
 #else
 #define DDLandlordBaseUrl     @"https://ssl.test.doordu.com:8001/police/"
 #endif

@@ -142,6 +142,7 @@
     }
     urlString = [urlString utf8EncodingString];
     AFHTTPSessionManager * manager = [[self class] sharedAFManager];
+    WeakSelf
     [manager GET:urlString parameters:dict progress:^(NSProgress * _Nonnull uploadProgress) {
         NSLog(@"uploadProgress： %f",uploadProgress.fractionCompleted);
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

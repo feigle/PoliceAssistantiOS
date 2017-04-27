@@ -16,7 +16,7 @@
 #import "DDLandlordRecordEmptyListView.h"
 #import "DDLandlordSelfHelpAuthorizationViewController.h"
 
-@interface DDLandlordRecordListViewController ()<UISearchBarDelegate>
+@interface DDLandlordRecordListViewController ()
 
 /**搜索结果数据源*/
 @property (nonatomic,strong) NSMutableArray * searchResultDataArray;
@@ -29,6 +29,9 @@
 
 /**授权记录 为空的 时候*/
 @property (nonatomic,strong) DDLandlordRecordEmptyListView * recordEmptyView;
+
+/**记录搜索的关键字*/
+@property (nonatomic,strong) NSString * searchTextKey;
 
 @end
 
@@ -49,6 +52,13 @@
     [super headerRefreshData];
     [self requestRecordListData];
 }
+/**下拉加载更多*/
+- (void)footRefreshData
+{
+    [super footRefreshData];
+    [self requestRecordListData];
+}
+
 /**授权记录请求数据*/
 - (void)requestRecordListData
 {
@@ -102,9 +112,9 @@
 
 #pragma mark - 搜索框里面的处理
 #pragma mark - 时时搜索,与搜索按钮点击
-- (void)realTimeSearchResultsSearchKey:(NSString *)serachKey
+- (void)realTimeSearchResults
 {
-    if ([serachKey removeBlank].length == 0) {
+    if ([self.searchTextKey removeBlank].length == 0) {
         return;
     }
     DDLandlordUserModel * landlordModel = landlordUserModel;
@@ -114,18 +124,20 @@
     dict[@"dep_id"] = [landlordModel.selectedModel.dep_id toString];
     dict[@"is_self_room"] = [landlordModel.selectedModel.is_self_room toString];
     dict[@"building_id"] = [landlordModel.selectedModel.building_id toString];
-    dict[@"search_name"] = serachKey;
-    dict[@"start_page"] = @(0);
-    dict[@"page_no"] = @(99999);
+    dict[@"search_name"] = self.searchTextKey;
+    dict[@"start_page"] = @(self.resultViewController.page);
+    dict[@"page_no"] = @(self.resultViewController.pagesize);
     WeakSelf
-    [self getWithUrlString:DDLandlordAuthorizationsRecordsUrlStr parms:dict success:^(NSData *requestData, NSDictionary *requestDict, NSInteger statusCode) {
+    [self.resultViewController getWithUrlString:DDLandlordAuthorizationsRecordsUrlStr parms:dict success:^(NSData *requestData, NSDictionary *requestDict, NSInteger statusCode) {
         StrongSelf
         NSArray * dictsArray = requestDict[@"list"];
-        [strongSelf.searchResultDataArray removeAllObjects];
-        if (!dictsArray.count) {
-            [DDProgressHUD showCenterWithText:@"刚房号不存在" duration:2.0];
-            [strongSelf.resultViewController reloadData];
-            return ;
+        if (strongSelf.resultViewController.page == 1) {
+            [strongSelf.searchResultDataArray removeAllObjects];
+            if (!dictsArray.count) {
+                [DDProgressHUD showCenterWithText:@"房号不存在" duration:2.0];
+                [strongSelf.resultViewController reloadData];
+                return ;
+            }
         }
         NSError * error = nil;
         NSArray * listModelArray = [DDLandlordRecordListModel arrayOfModelsFromDictionaries:dictsArray error:&error];
@@ -157,6 +169,7 @@
     self.tableView.backgroundColor =ColorHex(@"#EFEFF4");
     [self searchBarConfig];
     [self addHeaderRefresh];
+    [self addFootRefresh];
 }
 #pragma mark - UITableView 的代理方法
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -197,17 +210,23 @@
         WeakSelf
         /** 时时更新搜索 */
         [_searchController realTimeSearchResultsBlock:^(UISearchController *searchVC, NSString *searchText) {
-            StrongSelf
-            [strongSelf realTimeSearchResultsSearchKey:searchText];
+//            StrongSelf
+//            strongSelf.resultViewController.page = 1;
+//            strongSelf.searchTextKey = searchText;
+//            [strongSelf realTimeSearchResults];
         }];
         /**键盘的搜索按钮 点击事件*/
         [_searchController searchButtonClickedBlock:^(UISearchController *searchVC, UISearchBar *searchBar) {
             StrongSelf
-            [strongSelf realTimeSearchResultsSearchKey:searchBar.text];
+            strongSelf.resultViewController.page = 1;
+            strongSelf.searchTextKey = searchBar.text;
+            [strongSelf realTimeSearchResults];
         }];
         /**UISearchBar 取消按钮被点击了*/
         [_searchController cancelButtonClickedBlock:^(UISearchController *searchVC, UISearchBar *searchBar) {
             StrongSelf
+            strongSelf.searchTextKey = @"";
+            strongSelf.resultViewController.page = 1;
             [strongSelf.searchController.searchBar resignFirstResponder];
             [strongSelf.searchResultDataArray removeAllObjects];
             [strongSelf.resultViewController reloadData];
@@ -267,6 +286,18 @@
                 [strongSelf.searchController.searchBar resignFirstResponder];
             }
         }];
+        [_resultViewController addHeaderRefresh];
+        [_resultViewController addFootRefresh];
+        /**搜索的下拉刷新*/
+        [_resultViewController setDdBaseSearchHeaderRefreshData:^{
+            StrongSelf
+            [strongSelf realTimeSearchResults];
+        }];
+        /**搜索的下拉加载更多*/
+        [_resultViewController setDdBaseSearchFootRefreshData:^{
+            StrongSelf
+            [strongSelf realTimeSearchResults];
+        }];
     }
     return _resultViewController;
 }
@@ -289,7 +320,6 @@
     _searchBar.barTintColor = DaohangCOLOR;
     _searchBar.returnKeyType = UIReturnKeySearch;
     _searchBar.placeholder = @"请输入房号";
-    _searchBar.delegate = self;
     _searchBar.layer.masksToBounds = YES;
     //删除原有的background,直接设置搜索框颜色
     [[[[_searchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
@@ -303,16 +333,6 @@
     [_searchField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     _searchField.textColor = [UIColor whiteColor];
     [_searchBar sizeToFit];
-}
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    searchBar.showsCancelButton = YES;
-    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel =(UIButton *)view;
-            [cancel setTitle:@"取消" forState:UIControlStateNormal];
-            cancel.titleLabel.font = [UIFont systemFontOfSize:14];
-        }
-    }
 }
 #pragma mark - 显示 空的 无授权记录 页面
 - (void)showRecordEmptyView

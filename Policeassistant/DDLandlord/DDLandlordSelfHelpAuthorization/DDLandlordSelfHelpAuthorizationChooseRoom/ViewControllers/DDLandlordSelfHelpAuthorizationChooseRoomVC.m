@@ -12,7 +12,7 @@
 #import "DDBaseSearchController.h"
 #import "DDBaseSearchResultViewController.h"
 
-@interface DDLandlordSelfHelpAuthorizationChooseRoomVC ()<UISearchBarDelegate>
+@interface DDLandlordSelfHelpAuthorizationChooseRoomVC ()
 
 /**搜索结果数据源*/
 @property (nonatomic,strong) NSMutableArray * searchResultDataArray;
@@ -23,6 +23,8 @@
 /**搜索框背景view*/
 @property (nonatomic,strong) UIView * searchBarBgView;
 
+/**记录搜索的关键字*/
+@property (nonatomic,strong) NSString * searchTextKey;
 
 @end
 
@@ -91,28 +93,30 @@
 
 #pragma mark - 搜索框里面的处理
 #pragma mark - 时时搜索,与搜索按钮点击
-- (void)realTimeSearchResultsSearchKey:(NSString *)serachKey
+- (void)realTimeSearchResults
 {
-    if ([serachKey removeBlank].length == 0) {
+    if ([self.searchTextKey removeBlank].length == 0) {
         return;
     }
     DDLandlordUserModel * landlordModel = landlordUserModel;
     NSMutableDictionary * dict = [NSMutableDictionary dictionary];
     dict[@"building_id"] = [landlordModel.selectedModel.building_id toString];
-    dict[@"search_name"] = serachKey;
-    dict[@"is_self_room"] = [landlordModel.selectedModel.is_self_room toString];
-    dict[@"start_page"] = @(0);
-    dict[@"page_no"] = @(99999);
+    dict[@"start_page"] = @(self.resultViewController.page);
+    dict[@"page_no"] = @(self.resultViewController.pagesize);
     dict[@"token"] = landlordModel.token;
+    dict[@"is_self_room"] = [landlordModel.selectedModel.is_self_room toString];
+    dict[@"search_name"] = self.searchTextKey;
     WeakSelf
-    [DDHttpRequest getWithUrlString:DDLandlordEstatesRoom_numbersUrlStr parms:[DDHttpRequest handleParametersSHA1:dict] success:^(NSData *requestData, NSDictionary *requestDict, NSInteger statusCode) {
+    [self.resultViewController getWithUrlString:DDLandlordEstatesRoom_numbersUrlStr parms:dict success:^(NSData *requestData, NSDictionary *requestDict, NSInteger statusCode) {
         StrongSelf
         NSArray * dictsArray = requestDict[@"list"];
-        [strongSelf.searchResultDataArray removeAllObjects];
-        if (!dictsArray.count) {
-            [DDProgressHUD showCenterWithText:@"刚房号不存在" duration:2.0];
-            [strongSelf.resultViewController reloadData];
-            return ;
+        if (strongSelf.resultViewController.page == 1) {
+            [strongSelf.searchResultDataArray removeAllObjects];
+            if (!dictsArray.count) {
+                [DDProgressHUD showCenterWithText:@"房号不存在" duration:2.0];
+                [strongSelf.resultViewController reloadData];
+                return ;
+            }
         }
         NSError * error = nil;
         NSArray * listModelArray = [DDLandlordSelfHelpAuthorizationChooseRoomModel arrayOfModelsFromDictionaries:dictsArray error:&error];
@@ -121,7 +125,11 @@
         }
         [strongSelf.resultViewController reloadData];
     } failure:^(NSInteger statusCode, NSError *error, NSString *errorMessage) {
-        
+        StrongSelf
+        if (statusCode == 11009) {
+            [strongSelf.searchResultDataArray removeAllObjects];
+            [strongSelf.resultViewController reloadData];
+        }
     }];
 }
 
@@ -195,17 +203,24 @@
         WeakSelf
         /** 时时更新搜索 */
         [_searchController realTimeSearchResultsBlock:^(UISearchController *searchVC, NSString *searchText) {
-            StrongSelf
-            [strongSelf realTimeSearchResultsSearchKey:searchText];
+//            StrongSelf
+//            strongSelf.resultViewController.page = 1;
+//            strongSelf.searchTextKey = searchText;
+//            [strongSelf realTimeSearchResults];
         }];
         /**键盘的搜索按钮 点击事件*/
         [_searchController searchButtonClickedBlock:^(UISearchController *searchVC, UISearchBar *searchBar) {
             StrongSelf
-            [strongSelf realTimeSearchResultsSearchKey:searchBar.text];
+            strongSelf.resultViewController.page = 1;
+            strongSelf.searchTextKey = searchBar.text;
+            [strongSelf realTimeSearchResults];
         }];
         /**UISearchBar 取消按钮被点击了*/
         [_searchController cancelButtonClickedBlock:^(UISearchController *searchVC, UISearchBar *searchBar) {
             StrongSelf
+            strongSelf.searchTextKey = @"";
+            strongSelf.resultViewController.page = 1;
+            [strongSelf.searchController.searchBar resignFirstResponder];
             [strongSelf.searchResultDataArray removeAllObjects];
             [strongSelf.resultViewController reloadData];
         }];
@@ -267,6 +282,18 @@
                 [strongSelf.searchController.searchBar resignFirstResponder];
             }
         }];
+        [_resultViewController addHeaderRefresh];
+        [_resultViewController addFootRefresh];
+        /**搜索的下拉刷新*/
+        [_resultViewController setDdBaseSearchHeaderRefreshData:^{
+            StrongSelf
+            [strongSelf realTimeSearchResults];
+        }];
+        /**搜索的下拉加载更多*/
+        [_resultViewController setDdBaseSearchFootRefreshData:^{
+            StrongSelf
+            [strongSelf realTimeSearchResults];
+        }];
     }
     return _resultViewController;
 }
@@ -290,7 +317,6 @@
     _searchBar.returnKeyType = UIReturnKeySearch;
     _searchBar.placeholder = @"请输入房号";
     _searchBar.layer.masksToBounds = YES;
-    _searchBar.delegate = self;
     //删除原有的background,直接设置搜索框颜色
     [[[[_searchBar.subviews objectAtIndex:0] subviews] objectAtIndex:0] removeFromSuperview];
     //拿出输入框控件对其设置字体及背景颜色
@@ -303,16 +329,6 @@
     [_searchField setValue:[UIColor whiteColor] forKeyPath:@"_placeholderLabel.textColor"];
     _searchField.textColor = [UIColor whiteColor];
     [_searchBar sizeToFit];
-}
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar{
-    searchBar.showsCancelButton = YES;
-    for(UIView *view in  [[[searchBar subviews] objectAtIndex:0] subviews]) {
-        if([view isKindOfClass:[NSClassFromString(@"UINavigationButton") class]]) {
-            UIButton * cancel =(UIButton *)view;
-            [cancel setTitle:@"取消" forState:UIControlStateNormal];
-            cancel.titleLabel.font = [UIFont systemFontOfSize:14];
-        }
-    }
 }
 
 

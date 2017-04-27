@@ -17,13 +17,15 @@
 //#define serve @"http://ssl.test.doordu.com:8001/police"
 //13410010212  11111
 
-#if DDReleaseStatus
-#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"https://ddapp.doordu.com:8001/police/%@",_URL_]
-#else
-//内网
-#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"https://ssl.test.doordu.com:8001/police/%@",_URL_]
-//#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"http://10.0.0.243:8007/%@",_URL_]
-#endif
+#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"%@%@",DDLandlordBaseUrl,_URL_]
+
+//#if DDReleaseStatus
+//#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"%@%@",DDLandlordBaseUrl,_URL_]
+//#else
+////内网
+//#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"https://ssl.test.doordu.com:8001/police/%@",_URL_]
+////#define API_BASE_URL(_URL_) [NSString stringWithFormat:@"http://10.0.0.243:8007/%@",_URL_]
+//#endif
 
 
 

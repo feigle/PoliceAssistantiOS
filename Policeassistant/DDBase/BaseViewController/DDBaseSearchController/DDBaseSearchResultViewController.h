@@ -28,6 +28,10 @@
 
 /**开始拖拽的时候，这时可以做一些操作，比如：用于隐藏键盘*/
 @property (nonatomic,copy) void (^ddBaseSearchWillBeginDragging)();
+/**下拉刷新*/
+@property (nonatomic,copy) void (^ddBaseSearchHeaderRefreshData)();
+/**上拉加载更多*/
+@property (nonatomic,copy) void (^ddBaseSearchFootRefreshData)();
 
 /**刷新数据*/
 - (void)reloadData;

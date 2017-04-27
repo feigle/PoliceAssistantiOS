@@ -53,6 +53,7 @@
         }
     } failure:^(NSInteger statusCode, NSError *error, NSString *errorMessage) {
         StrongSelf;
+        strongSelf.page--;/**失败之后需要减去  1 */
         [strongSelf endRefresh];
         failureBlock(statusCode,error,errorMessage);
     }];
@@ -89,6 +90,7 @@
         }
     } failure:^(NSInteger statusCode, NSError *error, NSString *errorMessage) {
         StrongSelf;
+        strongSelf.page--;/**失败之后需要减去  1 */
         [strongSelf endRefresh];
         failureBlock(statusCode,error,errorMessage);
     }];
@@ -125,6 +127,7 @@
         }
     } failure:^(NSInteger statusCode, NSError *error, NSString *errorMessage) {
         StrongSelf;
+        strongSelf.page--;/**失败之后需要减去  1 */
         [strongSelf endRefresh];
         failureBlock(statusCode,error,errorMessage);
     }];

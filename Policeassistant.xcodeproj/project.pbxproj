@@ -3263,8 +3263,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doordu.Policeassistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "0d96e3a2-b8b0-4694-9be9-3155aa466423";
-				PROVISIONING_PROFILE_SPECIFIER = PoliceassistantDoorduDev;
+				PROVISIONING_PROFILE = "e6b1cdeb-5d28-43a0-9d47-993a3f305314";
+				PROVISIONING_PROFILE_SPECIFIER = DoorduPoliceassistant;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -3291,8 +3291,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.doordu.Policeassistant;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9eb7dfca-78b9-4b0a-b66c-9f480601c7cd";
-				PROVISIONING_PROFILE_SPECIFIER = PoliceassistantDoorduDistribution;
+				PROVISIONING_PROFILE = "893cf68c-b99f-40bd-a45f-21eb8565ed9f";
+				PROVISIONING_PROFILE_SPECIFIER = DoorduPoliceassistant_Distribution;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

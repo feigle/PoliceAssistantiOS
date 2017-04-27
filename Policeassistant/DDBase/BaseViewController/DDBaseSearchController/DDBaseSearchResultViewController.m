@@ -23,6 +23,21 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
 }
 
+- (void)headerRefreshData
+{
+    [super headerRefreshData];
+    if (_ddBaseSearchHeaderRefreshData) {
+        _ddBaseSearchHeaderRefreshData();
+    }
+}
+
+- (void)footRefreshData
+{
+    [super footRefreshData];
+    if (_ddBaseSearchFootRefreshData) {
+        _ddBaseSearchFootRefreshData();
+    }
+}
 
 #pragma mark - Table view data source
 
