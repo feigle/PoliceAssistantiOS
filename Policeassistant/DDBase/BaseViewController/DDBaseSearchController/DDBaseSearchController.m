@@ -73,6 +73,15 @@
     }
 }
 
+-(BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    //过滤空格输入
+    if ([text isEqualToString:@" "]) {
+        return NO;
+    }
+    return YES;
+}
+
 /**搜索点击按钮*/
 - (void)searchButtonClickedBlock:(DDBaseSearchBarSearchButtonClickedSearchVCBlock)block
 {

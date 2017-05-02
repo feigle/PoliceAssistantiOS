@@ -14,7 +14,7 @@
 #import "DDLandlordSelfHelpAuthorizationChooseRoomModel.h"
 #import "DDLandlordSelfHelpAuthorizationModel.h"
 
-@interface DDLandlordSelfHelpAuthorizationViewController ()
+@interface DDLandlordSelfHelpAuthorizationViewController ()<UITextFieldDelegate>
 
 /**显示中间的内容背景，用UIScrollView，可以上下滑动*/
 @property (nonatomic,strong) UIScrollView * contentBgScrollView;
@@ -207,6 +207,7 @@
     UIView * nameBgView = [self contentWithTitle:@"姓名" isNeedArrow:NO isNeedSwitch:NO isNeedTextField:YES desc:nil descColor:nil placeHolder:@"请输入姓名"];
     nameBgView.top = desBaseTitleView.bottom;
     _userNameTextField = (UITextField *)[nameBgView viewWithTag:1000];
+    _userNameTextField.delegate = self;
     [self.contentBgScrollView addSubview:nameBgView];
     /**手机号*/
     UIView * phoneBgView = [self contentWithTitle:@"+86" isNeedArrow:NO isNeedSwitch:NO isNeedTextField:YES desc:nil descColor:nil placeHolder:@"请输入手机号"];
@@ -381,6 +382,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    // 过滤空格输入
+    if ([string isEqualToString:@" "]) {
+        return NO;
+    }
+    return YES;
 }
 
 /*
