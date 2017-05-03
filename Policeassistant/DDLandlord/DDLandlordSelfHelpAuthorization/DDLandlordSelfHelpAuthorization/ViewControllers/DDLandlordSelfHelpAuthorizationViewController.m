@@ -14,7 +14,7 @@
 #import "DDLandlordSelfHelpAuthorizationChooseRoomModel.h"
 #import "DDLandlordSelfHelpAuthorizationModel.h"
 
-@interface DDLandlordSelfHelpAuthorizationViewController ()
+@interface DDLandlordSelfHelpAuthorizationViewController ()<UITextFieldDelegate>
 
 /**显示中间的内容背景，用UIScrollView，可以上下滑动*/
 @property (nonatomic,strong) UIScrollView * contentBgScrollView;
@@ -359,6 +359,7 @@
         textField.width6 = bgView.width6-lineView.right6 - 30;
         textField.left6 = lineView.right6+15;
         textField.height = font6Size(36/2.0).lineHeight;
+        textField.delegate = self;
         textField.tag = 1000;
         textField.centerY = bgView.height/2.0;
         [bgView addSubview:textField];
@@ -376,6 +377,26 @@
     label.tag = 1000;
     [bgView addSubview:label];
     return bgView;
+}
+
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if ([string isEqualToString:@"\n"])  {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    if (textField == _phoneTextField) {
+        if (range.location>=11) {
+            return NO;
+        }else{
+            return YES;
+        }
+    }
+    if (textField == _userNameTextField) {
+        if ([string isEqualToString:@" "]) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning {

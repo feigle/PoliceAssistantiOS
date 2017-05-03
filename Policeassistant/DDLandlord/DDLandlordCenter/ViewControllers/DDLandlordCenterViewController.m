@@ -172,7 +172,7 @@
     self.chooseHouseLefImageView.left = chooseHouseListLefImageLeft;
     self.chooseHouseListButton.left = self.chooseHouseLefImageView.right6+10;
 #pragma mark - 设置标题的最大宽度DDLandlordCommonarrowdown
-    self.chooseHouseListButton.maxWidth = chooseHouseListBgView.width - self.chooseHouseLefImageView.width - 40*kScreen6ScaleW;
+    self.chooseHouseListButton.maxWidth = chooseHouseListBgView.width - self.chooseHouseLefImageView.width - 50*kScreen6ScaleW;
 /**功能列表*/
     UIView * functionListBgView = [self contentBgCircularViewWithFrame:CGRectMake6(15, chooseHouseListBgView.bottom6+20/2.0, kScreen6Width-30, 120*3/2.0)];
     [self.bgScrollView addSubview:functionListBgView];
