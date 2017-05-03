@@ -81,8 +81,6 @@
     }
     return YES;
 }
-
-/**搜索点击按钮*/
 - (void)searchButtonClickedBlock:(DDBaseSearchBarSearchButtonClickedSearchVCBlock)block
 {
     self.searchButtonClikcedBlock = block;

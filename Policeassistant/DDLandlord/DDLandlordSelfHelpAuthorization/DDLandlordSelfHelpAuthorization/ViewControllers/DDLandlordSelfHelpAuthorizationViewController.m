@@ -379,7 +379,7 @@
     [bgView addSubview:label];
     return bgView;
 }
-
+#pragma mark - UITextFieldDelegate
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
     if ([string isEqualToString:@"\n"])  {
         [textField resignFirstResponder];
@@ -403,16 +403,6 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - UITextFieldDelegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    // 过滤空格输入
-    if ([string isEqualToString:@" "]) {
-        return NO;
-    }
-    return YES;
 }
 
 /*
